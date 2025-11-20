@@ -1,6 +1,7 @@
-import pygame
 import random
 import sys
+
+import pygame
 
 # ---------- Konfigurasi ----------
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 400
@@ -11,12 +12,13 @@ GRID_ROWS = SCREEN_HEIGHT // BLOCK_SIZE
 # Warna
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED   = (255, 0, 0)
+RED = (255, 0, 0)
 GREEN = (0, 200, 0)
 DARK_GRAY = (40, 40, 40)
 
 # Kecepatan (blok per detik)
 SNAKE_SPEED = 10
+
 
 # ---------- Utilitas ----------
 def random_food_position(snake_body):
@@ -27,6 +29,7 @@ def random_food_position(snake_body):
         if (x, y) not in snake_body:
             return x, y
 
+
 def draw_grid(surface):
     # Garis grid opsional agar rapi
     for x in range(0, SCREEN_WIDTH, BLOCK_SIZE):
@@ -34,17 +37,21 @@ def draw_grid(surface):
     for y in range(0, SCREEN_HEIGHT, BLOCK_SIZE):
         pygame.draw.line(surface, DARK_GRAY, (0, y), (SCREEN_WIDTH, y))
 
+
 def draw_snake(surface, snake_body):
-    for (x, y) in snake_body:
+    for x, y in snake_body:
         pygame.draw.rect(surface, WHITE, pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE))
+
 
 def draw_food(surface, pos):
     x, y = pos
     pygame.draw.rect(surface, RED, pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE))
 
+
 def show_score(surface, score, font):
     text = font.render(f"Score: {score}", True, GREEN)
     surface.blit(text, (10, 8))
+
 
 def game_over_screen(surface, score, font_big, font_small):
     surface.fill(BLACK)
@@ -53,7 +60,9 @@ def game_over_screen(surface, score, font_big, font_small):
     surface.blit(title, rect)
 
     score_text = font_small.render(f"Score: {score}", True, WHITE)
-    score_rect = score_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 10))
+    score_rect = score_text.get_rect(
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 10)
+    )
     surface.blit(score_text, score_rect)
 
     info = font_small.render("Press R to Restart or Q/Esc to Quit", True, WHITE)
@@ -61,6 +70,7 @@ def game_over_screen(surface, score, font_big, font_small):
     surface.blit(info, info_rect)
 
     pygame.display.flip()
+
 
 # ---------- Game Loop ----------
 def main():
@@ -131,7 +141,10 @@ def main():
 
                     if new_dir is not None:
                         # Cegah berbalik: (dx,dy) + (ndx,ndy) != (0,0)
-                        if (new_dir[0] + direction[0], new_dir[1] + direction[1]) != (0, 0):
+                        if (new_dir[0] + direction[0], new_dir[1] + direction[1]) != (
+                            0,
+                            0,
+                        ):
                             pending_direction = new_dir
 
         if game_over:
@@ -150,7 +163,9 @@ def main():
             new_head = (head_x + dx, head_y + dy)
 
             # Deteksi tabrakan dinding
-            if not (0 <= new_head[0] < SCREEN_WIDTH and 0 <= new_head[1] < SCREEN_HEIGHT):
+            if not (
+                0 <= new_head[0] < SCREEN_WIDTH and 0 <= new_head[1] < SCREEN_HEIGHT
+            ):
                 game_over = True
                 break
 
@@ -177,6 +192,7 @@ def main():
         draw_food(screen, food_pos)
         show_score(screen, score, font_small)
         pygame.display.flip()
+
 
 if __name__ == "__main__":
     main()
